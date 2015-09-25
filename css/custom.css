@@ -1,0 +1,121 @@
+h1 {
+    margin: 0;
+}
+
+#volumeContainer, #muteContainer, #halfContainer {
+    background: -webkit-linear-gradient(top, #000000 99%, #191919 99%, #333333 99%);
+    background: linear-gradient(to top, #000000 99%, #191919 99%, #333333 99%); 
+}
+
+#pButton {
+    width: 60px;
+    height: 60px;
+    padding: 15px;
+    display: block;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    background-size: 30px 30px;
+    background-color: -webkit-linear-gradient(top, #000000 99%, #191919 99%, #333333 99%);
+    background-color: black;
+
+}
+
+.container-share-embed {
+    top: 0;
+    position: fixed;
+    transition: all .3s ease-out 0s;
+    color: #fff;
+    right:-120px;
+    background-color: #282828;
+    height: 60px;
+    z-index: -1;
+    width: 0;
+}
+
+.show {
+    right:120px;
+    width: 90%;
+    transition: all .3s ease-out 0s;
+}
+
+.embed-button {
+    
+}
+
+.block-embed {
+    display: block;
+    float: none;
+    padding: 10px;
+    width: 60%;
+    margin: auto;
+}
+
+#btn-input-embed {
+    float: right;
+    display: block;
+    width: 85%;
+}
+
+.block-embed-form label {
+    color: #fff;
+    font-size: 12px;
+    padding-right: 2%;
+    text-align: right;
+    width: 13%;
+    float: left;
+}
+
+
+
+/*Media Queries*/
+
+/*1024px*/
+@media (max-width: 1024px) {
+  
+    .show {
+        width: 85%;
+    }
+    
+}
+
+/*768px*/
+@media (max-width: 768px) {
+  
+    .show {
+        width: 75%;
+    }
+    
+    .block-embed {
+        width: 50%;
+    }
+    
+    .block-embed-form label {
+        width: 30%;
+    }
+    
+    #btn-input-embed {
+        width: 65%;
+    }
+}
+
+/*480px*/
+@media (max-width: 480px) {
+  
+    .show {
+        width: 60%;
+    }
+    
+    .block-embed {
+        width: 70%;
+    }
+    
+    .block-embed-form label {
+        width: 30%;
+    }
+    
+    #btn-input-embed {
+        width: 60%;
+    }
+    
+}
