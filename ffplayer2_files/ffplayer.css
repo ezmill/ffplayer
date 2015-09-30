@@ -286,6 +286,7 @@ body {
       height: 60px;
       width: 100vw;
       font-size: 8px;
+      -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
       
      
     }
@@ -300,15 +301,15 @@ body {
 					text-decoration: none;
 					color: rgba(255,255,255,0.7);
 				}
-		   .demo-icon {
+.demo-icon {
     font-family: "fontello";
     font-style: normal;
     font-weight: normal;
     speak: none;
     display: inline-block;
     text-decoration: inherit;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    /*height: 16px;*/
     margin-right: .2em;
     text-align: center;
     /* opacity: .8; */
@@ -321,7 +322,7 @@ body {
     /* remove if not needed */
     margin-left: .2em;
     /* You can be more comfortable with increased icons size */
-    /* font-size: 120%; */
+     font-size: 160% 
     /* Font smoothing. That was taken from TWBS */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -341,6 +342,7 @@ body {
 	text-align: center;
 	cursor: pointer;
 	border-left: solid 1px #282828;
+	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
 }
 #muteContainer, #halfContainer{
 	display: none;
@@ -356,75 +358,25 @@ body {
 	text-align: center;
 	cursor: pointer;
 	border-left: solid 1px #282828;
+	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
 
 }
 .icon-volume-up, .icon-mute, .icon-half, .icon-download{
 	color: #282828;
 	/*color: rgba(255,255,255,0.7);*/
-	font-size: 20px;
-    /*line-height: 60px;*/
+	/*font-size: 20px;*/
+    line-height: 60px;
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
+	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
 }
 
-/*    #volume:hover #volumeBar{
-	display: block;
-}*/
-
-#innerVolume{
-	height: 0px;
-	/*margin-top: 10px;*/
-	/*border-radius: 10px;*/
-	/*background-color: #121212;*/
-	background-color: white;
-}
-
-#titleImg{
-	/*width: 50%;*/
-	height: 60px;
-	margin: 0 auto;
-	min-height: 60px;
-}
-
-.animateUp{
-
--webkit-animation: volumeUp 0.5s ease;
-        animation: volumeUp 0.5s ease;	
-        -webkit-animation-fill-mode: forwards;
-        animation-fill-mode: forwards;
-}
-
-.animateDown{
-
--webkit-animation: volumeDown 0.5s ease;
-        animation: volumeDown 0.5s ease;	
-        -webkit-animation-fill-mode: forwards;
-        animation-fill-mode: forwards;
-}
-
-@-webkit-keyframes volumeUp {
-	0% { height: 0px; }
-	100% { height: 120px; }
-}
-@keyframes volumeUp {
-	0% { height: 0px; }
-	100% { height: 120px; }
-}
-
-@-webkit-keyframes volumeDown {
-	0% { height: 120px; }
-	100% { height: 0px; }
-}
-@keyframes volumeDown {
-	0% { height: 120px; }
-	100% { height: 0px; }
-}
 #titleContainer{
 	display: inline-block;
 	width: 200px;
 	overflow: hidden;
-	/*text-align: center;*/
+	-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
 }
 @media screen and (orientation:landscape) { 
 	body{
@@ -471,3 +423,158 @@ body {
 		display: none;
 		width: 0;
 	}}
+
+//------custom------//
+h1 {
+    margin: 0;
+}
+
+#volumeContainer, #muteContainer, #halfContainer {
+   /* background: -webkit-linear-gradient(top, #000000 99%, #191919 99%, #333333 99%);
+    background: linear-gradient(to top, #000000 99%, #191919 99%, #333333 99%); */
+    background-color: black;
+}
+
+#pButton {
+    width: 60px;
+    height: 60px;
+    padding: 15px;
+    display: block;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    background-size: 30px 30px;
+    /*background-color: -webkit-linear-gradient(top, #000000 99%, #191919 99%, #333333 99%);*/
+    background-color: black;
+
+}
+
+#pButton:hover, .next:hover {
+        -moz-opacity: 0.70;
+        -khtml-opacity: 0.70;
+        opacity: 0.70;
+        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=70);
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+        filter:alpha(opacity=70);
+}
+
+#pButton:active, .next:active {
+        -moz-opacity: 0.20;
+        -khtml-opacity: 0.20;
+        opacity: 0.20;
+        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=20);
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=20);
+        filter:alpha(opacity=70);
+}
+/*.next:hover{
+        -moz-opacity: 0.70;
+        -khtml-opacity: 0.70;
+        opacity: 0.70;
+        -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=70);
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+        filter:alpha(opacity=70);
+    }*/
+
+
+.container-share-embed {
+    top: 0;
+    position: fixed;
+    transition: all .3s ease-out 0s;
+    color: #fff;
+    right:-120px;
+    background-color: #282828;
+    height: 60px;
+    z-index: -1;
+    width: 0;
+}
+
+.show {
+    right:120px;
+    width: 90%;
+    transition: all .3s ease-out 0s;
+}
+
+.embed-button {
+    
+}
+
+.block-embed {
+    display: block;
+    float: none;
+    padding: 10px;
+    width: 60%;
+    margin: auto;
+}
+
+#btn-input-embed {
+    float: right;
+    display: block;
+    width: 85%;
+}
+
+.block-embed-form label {
+    color: #fff;
+    font-size: 12px;
+    padding-right: 2%;
+    text-align: right;
+    width: 13%;
+    float: left;
+}
+
+div#volumeContainer, #muteContainer, #halfContainer{
+    padding-top: 0px;
+}
+
+
+
+/*Media Queries*/
+
+/*1024px*/
+@media (max-width: 1024px) {
+  
+    .show {
+        width: 85%;
+    }
+    
+}
+
+/*768px*/
+@media (max-width: 768px) {
+  
+    .show {
+        width: 75%;
+    }
+    
+    .block-embed {
+        width: 50%;
+    }
+    
+    .block-embed-form label {
+        width: 30%;
+    }
+    
+    #btn-input-embed {
+        width: 65%;
+    }
+}
+
+/*480px*/
+@media (max-width: 480px) {
+  
+    .show {
+        width: 60%;
+    }
+    
+    .block-embed {
+        width: 70%;
+    }
+    
+    .block-embed-form label {
+        width: 30%;
+    }
+    
+    #btn-input-embed {
+        width: 60%;
+    }
+    
+}
