@@ -338,7 +338,8 @@ function FFPlayer(OPTIONS){
 
 	}
 	function skip(e){
-		that.song.pause();
+		console.log(that.song);
+		// that.song.pause();
 		if(that.mode == "sc playlist"){
 			currentPlaylistIndex++;
 			if(currentPlaylistIndex >= that.playlist.tracks.length){
@@ -347,8 +348,6 @@ function FFPlayer(OPTIONS){
 			SC.initialize({
 			  client_id: "ad877fecc7527d59d980232be493f705"
 			});
-			//220575924
-			// SC.stream("/playlists/115049597", {
 			SC.get("/playlists/137573264", {
 			  autoPlay: true, 
 			  useHTML5Audio: true,
@@ -359,19 +358,20 @@ function FFPlayer(OPTIONS){
 				  useHTML5Audio: true,
 				  preferFlash: false
 				}, function(sound) {
-				  that.song = sound;
-				  that.song._player.on("positionChange", function(state){
+				  that.song.pause();
+				  sound._player.on("positionChange", function(state){
 						that.update();
 				  })
-  				  that.song._player.on("stateChange", function(state){
+  				  sound._player.on("stateChange", function(state){
   				  		if(state == "ended"){
   				  			skip();
   				  		}
 				  })
+  				  that.song = sound;
 				  that.playButton.style.display = "block";
 				});			
 			});		
-		} else if(this.mode == "audio playlist"){
+		} else if(that.mode == "audio playlist"){
 
 		}
 	}
@@ -420,18 +420,18 @@ function FFPlayer(OPTIONS){
 		}
 	} 
 	window.addEventListener( 'resize', onWindowResize, false );
-		function onWindowResize(){
-			if(renderer){
-				renderer.setSize(window.innerWidth, window.innerHeight);
-				camera.aspect = window.innerWidth/window.innerHeight;
-				camera.updateProjectionMatrix();
-			}
-			if(this.mode == "sc playlist" || this.mode == "audio playlist"){
-				timelineWidth = window.innerWidth - (volumeContainer.offsetWidth + 90);
-			} else {
-				timelineWidth = window.innerWidth - (volumeContainer.offsetWidth + 60);
-			}
-		}	
+	function onWindowResize(){
+		if(renderer){
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			camera.aspect = window.innerWidth/window.innerHeight;
+			camera.updateProjectionMatrix();
+		}
+		if(that.mode == "sc playlist" || that.mode == "audio playlist"){
+			timelineWidth = window.innerWidth - (volumeContainer.offsetWidth + 90);
+		} else {
+			timelineWidth = window.innerWidth - (volumeContainer.offsetWidth + 60);
+		}
+	}	
 
 	 this.checkText = function(){
 		var txt = $("#trackTitle");
