@@ -140,7 +140,7 @@ function FFPlayer(OPTIONS){
 			});
 			//220575924
 			// SC.stream("/playlists/115049597", {
-			SC.get("/tracks/219210929", {
+			SC.get("/tracks/" + that.src, {
 				 autoPlay: !isMobile, 
 				 useHTML5Audio: true,
 				 preferFlash: false
@@ -169,7 +169,7 @@ function FFPlayer(OPTIONS){
 			});
 			//220575924
 			// SC.stream("/playlists/115049597", {
-			SC.get("/playlists/137573264", {
+			SC.get("/playlists/" + that.src, {
 
 			  autoPlay: !isMobile, 
 			  useHTML5Audio: true,
@@ -398,7 +398,7 @@ function FFPlayer(OPTIONS){
 			SC.initialize({
 			  client_id: "ad877fecc7527d59d980232be493f705"
 			});
-			SC.get("/playlists/137573264", {
+			SC.get("/playlists/" + that.src, {
 			  autoPlay: !isMobile, 
 			  useHTML5Audio: true,
 			  preferFlash: false
