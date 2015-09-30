@@ -14,7 +14,6 @@ function PickerDialog(){_ref1=PickerDialog.__super__.constructor.apply(this,argu
 
 
 /*! PLAYER CODE */
-var ffplayer = new FFPlayer({embed: true});
 // ffplayer.init();
 function FFPlayer(OPTIONS){
 	/**
@@ -204,6 +203,7 @@ function FFPlayer(OPTIONS){
 	var volumeBar = document.getElementById('volumeBar');
 	var innerVolume = document.getElementById('innerVolume');
 	var download = document.getElementsByClassName('download');
+	var embedButton = document.getElementsByClassName('embed-button');
 
 	if(this.mode == "sc playlist" || this.mode == "audio playlist"){
 		var timelineWidth = window.innerWidth - (volumeContainer.offsetWidth + 90);
@@ -251,7 +251,35 @@ function FFPlayer(OPTIONS){
 	})	
 	download[2].addEventListener("click", function(event){
 		console.log('download');
-	})						
+	})			
+	var embedClickCounter = 0;
+	embedButton[0].addEventListener("click", function(event){
+		if(embedClickCounter%2==0){
+			that.embedIcon.className = "container-share-embed show";
+		} else {
+			that.embedIcon.className = "container-share-embed";
+		}
+		embedClickCounter++;
+	})		
+
+	embedButton[1].addEventListener("click", function(event){
+		if(embedClickCounter%2==0){
+			that.embedIcon.className = "container-share-embed show";
+		} else {
+			that.embedIcon.className = "container-share-embed";
+		}
+		embedClickCounter++;
+	})		
+
+	embedButton[2].addEventListener("click", function(event){
+		if(embedClickCounter%2==0){
+			that.embedIcon.className = "container-share-embed show";
+		} else {
+			that.embedIcon.className = "container-share-embed";
+		}
+		embedClickCounter++;
+	})		
+
 	var onvolume = false;
 
 	this.playButton.addEventListener("click", play, true);
