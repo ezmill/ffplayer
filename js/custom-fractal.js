@@ -166,6 +166,10 @@ function FFPlayer(OPTIONS){
 			  preferFlash: false
 			}, function(sound) {
 				that.playlist = sound;
+				that.title = that.playlist.title;
+				that.artist = that.playlist.user.username;
+				// that.credits.innerHTML = "<div class='left'><li><b>"+ that.title + "</b> | " + this.artist + "<br><span id='timer'>0:00</span> - " + this.description + "<br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
+
 				SC.stream("/tracks/" + sound.tracks[currentPlaylistIndex].id, {
 				  autoPlay: !isMobile, 
 				  useHTML5Audio: true,
@@ -433,6 +437,8 @@ function FFPlayer(OPTIONS){
 				trackTitle.innerHTML = tracklist[i].title
 			}
 		}
+		// currentTrack = 
+		trackTitle.innerHTML = this.playlist.tracks[currentPlaylistIndex].title;
 	}
 	this.checkPlayPause = function(){
 		switch(this.song.getState()){
