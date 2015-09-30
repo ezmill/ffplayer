@@ -140,18 +140,27 @@ function FFPlayer(OPTIONS){
 			});
 			//220575924
 			// SC.stream("/playlists/115049597", {
-			SC.stream("/tracks/219210929", {
-			  autoPlay: !isMobile, 
-			  useHTML5Audio: true,
-			  preferFlash: false
-			}, function(sound) {
-				console.log(sound)
-			  that.song = sound;
-			  that.song._player.on("positionChange", function(state){
-					that.update();
-			  })
-			  that.playButton.style.display = "block";
-			});			
+			SC.get("/tracks/219210929", {
+				 autoPlay: !isMobile, 
+				 useHTML5Audio: true,
+				 preferFlash: false
+			}, function(sound){
+				that.playlist = sound;
+				document.getElementById('playerTitle').innerHTML = that.playlist.title;
+				document.getElementById('playerArtist').innerHTML = that.playlist.user.username;
+				SC.stream("/tracks/" + sound.id, {
+				  autoPlay: !isMobile, 
+				  useHTML5Audio: true,
+				  preferFlash: false
+				}, function(sound) {
+				  that.song = sound;
+				  that.song._player.on("positionChange", function(state){
+						that.update();
+				  })
+				  that.playButton.style.display = "block";
+				});		
+			});		
+
 		} else if (this.mode == "audio playlist"){
 
 		} else if (this.mode == "sc playlist"){
@@ -167,8 +176,8 @@ function FFPlayer(OPTIONS){
 			  preferFlash: false
 			}, function(sound) {
 				that.playlist = sound;
-				playerTitle.innerHTML = that.playlist.title;
-				playerArtist.innerHTML = that.playlist.user.username;
+				document.getElementById('playerTitle').innerHTML = that.playlist.title;
+				document.getElementById('playerArtist').innerHTML = that.playlist.user.username;
 				// that.credits.innerHTML = "<div class='left'><li><b>"+ that.title + "</b> | " + this.artist + "<br><span id='timer'>0:00</span> - " + this.description + "<br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
 
 				SC.stream("/tracks/" + sound.tracks[currentPlaylistIndex].id, {
@@ -192,7 +201,7 @@ function FFPlayer(OPTIONS){
 		}
 
 	}
-	
+
 	var playerTitle = document.getElementById('playerTitle');
 	var playerArtist = document.getElementById('playerArtist');
 	var playerDescription = document.getElementById('playerDescription');
@@ -296,8 +305,9 @@ function FFPlayer(OPTIONS){
 
 	this.playButton.addEventListener("click", play, true);
 
-	this.nextButton.addEventListener("click", skip, true);
-
+	if(that.mode == "sc playlist" || that.mode == "audio playlist"){
+		this.nextButton.addEventListener("click", skip, true);
+	}	
 	audioplayer.addEventListener("touchstart", function(e){
 		e.preventDefault();
 		that.moveplayhead(e);
@@ -443,7 +453,9 @@ function FFPlayer(OPTIONS){
 			}
 		}
 		// currentTrack = 
-		trackTitle.innerHTML = this.playlist.tracks[currentPlaylistIndex].title;
+		if(this.mode == "sc playlist"){
+			trackTitle.innerHTML = this.playlist.tracks[currentPlaylistIndex].title;
+		}
 	}
 	this.checkPlayPause = function(){
 		switch(this.song.getState()){
