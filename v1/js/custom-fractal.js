@@ -55,7 +55,7 @@ function FFPlayer(OPTIONS){
 	this.createCredits = function(){
 		this.credits = document.createElement("ul");
 		this.credits.id = "credits";
-		this.credits.innerHTML = "<div class='left'><li><b>"+ this.title + "</b> | " + this.artist + "<br><span id='timer'>0:00</span> - " + this.description + "<br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
+		this.credits.innerHTML = "<div class='left'><li><b id='playerTitle'>"+ this.title + "</b> | <span id='playerArtist'>" + this.artist + "</span><br><span id='timer'>0:00</span> - <span id='playerDescription'>" + this.description + "</span><br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
 	}
 	this.createPlayhead = function(){
 		this.playhead = document.createElement("div");
@@ -211,6 +211,10 @@ function FFPlayer(OPTIONS){
 	var innerVolume = document.getElementById('innerVolume');
 	var download = document.getElementsByClassName('download');
 	var embedButton = document.getElementsByClassName('embed-button');
+
+	var playerTitle = document.getElementById('playerTitle');
+	var playerArtist = document.getElementById('playerArtist');
+	var playerDescription = document.getElementById('playerDescription');
 
 	if(this.mode == "sc playlist" || this.mode == "audio playlist"){
 		var timelineWidth = window.innerWidth - (volumeContainer.offsetWidth + 90);
