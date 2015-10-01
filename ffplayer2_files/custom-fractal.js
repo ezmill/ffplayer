@@ -43,9 +43,16 @@ function FFPlayer(OPTIONS){
 	this.volume = OPTIONS.volume || true;
 	this.downlaod = OPTIONS.download || true;
 	this.share = OPTIONS.share || true;
-	this.title = "BASED &amp; CONFUSED MIX";
-	this.artist = "ZORA JONES &amp; SINJIN HAWKE";
-	this.description = "<i> Visual at <a href='http://fractalfantasy.net' target='_blank'>Fractal Fantasy</a> </i>";
+	this.title = OPTIONS.title || "BASED &amp; CONFUSED MIX";
+	this.artist = OPTIONS.artist || "ZORA JONES &amp; SINJIN HAWKE";
+	this.songTitle = OPTIONS.songTitle || "";
+	// this.description = "<i> Visual at <a href='http://fractalfantasy.net' target='_blank'>Fractal Fantasy</a> </i>";
+	if(OPTIONS.description){
+		this.description = " - " + OPTIONS.description;
+	} else {
+		this.description = "";
+	}
+	this.useTracklist = OPTIONS.useTracklist || false;
 
 	this.playButton;
 	this.song, this.moveplayhead, this.mouseUp, this.mouseDown;
@@ -55,7 +62,7 @@ function FFPlayer(OPTIONS){
 	this.createCredits = function(){
 		this.credits = document.createElement("ul");
 		this.credits.id = "credits";
-		this.credits.innerHTML = "<div class='left'><li><b id='playerTitle'>"+ this.title + "</b> | <span id='playerArtist'>" + this.artist + "</span><br><span id='timer'>0:00</span> - <span id='playerDescription'>" + this.description + "</span><br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
+		this.credits.innerHTML = "<div class='left'><li><b id='playerTitle'>"+ this.title + "</b> | <span id='playerArtist'>" + this.artist + "</span><br><span id='timer'>0:00</span><span id='playerDescription'>" + this.description + "</span><br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
 	}
 	this.createPlayhead = function(){
 		this.playhead = document.createElement("div");
@@ -130,10 +137,49 @@ function FFPlayer(OPTIONS){
 		this.createPlayer();
 		this.initMusic();
 	}
-
+	this.createSong = function(src){
+		this.song = document.createElement("audio");
+		this.song.src = src;
+		this.song.autoPlayStarted = false;
+		this.song.getDuration = function(){
+			return this.duration;
+		}
+		this.song.getState = function(){
+			if(!this.paused){
+				return "playing";
+			} else if (this.seeking){
+				return "seeking";
+			} else if (this.paused){
+				return "paused";
+			}
+		}
+		this.song.getCurrentPosition = function(){
+			return this.currentTime;
+		}
+		this.song.seek = function(time){
+			this.currentTime = time;
+		}
+		this.song.setVolume = function(val){
+			this.volume = val;
+		}
+		this.song.addEventListener("timeupdate", function(){
+			that.update();
+		})
+		this.song.addEventListener("loadeddata", function(){
+			play();
+		})
+		this.song.addEventListener("ended", function(){
+			if(that.mode == "audio playlist"){
+				skip();				
+			}
+		})
+	}
 	this.initMusic = function(){
 		if(this.mode == "audio"){
-
+			document.getElementById('playerTitle').innerHTML = that.title;
+			document.getElementById('playerArtist').innerHTML = that.artist;
+			document.getElementById('titleContainer').innerHTML = that.songTitle;
+			this.createSong(this.src);
 		} else if (this.mode == "sc"){
 			SC.initialize({
 			  client_id: "ad877fecc7527d59d980232be493f705"
@@ -162,7 +208,7 @@ function FFPlayer(OPTIONS){
 			});		
 
 		} else if (this.mode == "audio playlist"){
-
+			this.createSong(this.src[0]);
 		} else if (this.mode == "sc playlist"){
 			SC.initialize({
 			  client_id: "ad877fecc7527d59d980232be493f705"
@@ -334,10 +380,8 @@ function FFPlayer(OPTIONS){
 
 	this.moveplayhead = function(e) {
 		if(e.touches){
-			console.log("touch event")
 			var newMargLeft = e.touches[0].pageX - timeline.offsetLeft;
 		} else {
-			console.log("mouse event")
 			var newMargLeft = e.pageX - timeline.offsetLeft;
 		}
 		if (newMargLeft >= 0 && newMargLeft <= timelineWidth) {
@@ -375,6 +419,7 @@ function FFPlayer(OPTIONS){
 	//Play and Pause
 	var counter = 0;
 	function play() {
+		console.log("PLay CALLED");
 			if(that.song.getState() !== "playing"){
 				that.song.play();
 				that.song.seek(currentTime);
@@ -422,7 +467,14 @@ function FFPlayer(OPTIONS){
 				});			
 			});		
 		} else if(that.mode == "audio playlist"){
-
+			currentPlaylistIndex++;
+			if(currentPlaylistIndex >= that.src.length){
+				currentPlaylistIndex = 0;
+			}
+			that.song.src = that.src[currentPlaylistIndex];
+			play();
+			that.song.seek(0);
+			play();
 		}
 	}
 	this.update = function(){
@@ -432,29 +484,37 @@ function FFPlayer(OPTIONS){
 		var str = dur.minutes + ":" + dur.seconds;
 		currentTime = this.song.getCurrentPosition();
 		// currentTime = song._player._prevCurrentPosition;
+		if(this.mode == "audio" || this.mode == "audio playlist")currentTime*=1000;
 		var time = this.getDuration(currentTime);
 		if(time.seconds < 10){
 			time.seconds = "0" + time.seconds;
 		}
 		var str = time.minutes + ":" + time.seconds;
 		timer.innerHTML = str;
+		if(this.mode == "audio" || this.mode == "audio playlist")currentTime/=1000;
+
 		relativePosition = currentTime/currentDuration;
+
 		playhead.style.marginLeft = (timelineWidth*relativePosition) + "px";
 		this.updateTitle();
-		this.checkText();
+		if(this.useTracklist)this.checkText();
 		this.checkPlayPause();
 
 	}
 	this.updateTitle = function(){
-		for(var i = 0; i < tracklist.length; i++){
-			if(currentTime>(tracklist[i].time)*1000){
-				currentTrack = tracklist[i];
-				trackTitle.innerHTML = tracklist[i].title
+		if(this.useTracklist){
+			for(var i = 0; i < tracklist.length; i++){
+				if(currentTime>(tracklist[i].time)*1000){
+					currentTrack = tracklist[i];
+					trackTitle.innerHTML = tracklist[i].title
+				}
 			}
 		}
 		// currentTrack = 
 		if(this.mode == "sc playlist"){
 			trackTitle.innerHTML = this.playlist.tracks[currentPlaylistIndex].title;
+		} else if (this.mode == "audio playlist"){
+			trackTitle.innerHTML = this.songTitle[currentPlaylistIndex];
 		}
 	}
 	this.checkPlayPause = function(){
