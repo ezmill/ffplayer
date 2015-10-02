@@ -163,9 +163,11 @@ function FFPlayer(OPTIONS){
 		this.song.addEventListener("timeupdate", function(){
 			that.update();
 		})
+
 		this.song.addEventListener("canplaythrough", function(){
 			// if(!alreadyPlayed){
-				play();
+				this.play();
+				// play();
 				// console.log("motherfucker");
 			// }
 			// alreadyPlayed = true;
