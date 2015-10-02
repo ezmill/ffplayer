@@ -46,6 +46,7 @@ function FFPlayer(OPTIONS){
 	this.title = OPTIONS.title || "";
 	this.artist = OPTIONS.artist || "";
 	this.songTitle = OPTIONS.songTitle || "";
+	this.autoPlay = OPTIONS.autoPlay || false;
 	// this.description = "<i> Visual at <a href='http://fractalfantasy.net' target='_blank'>Fractal Fantasy</a> </i>";
 	if(OPTIONS.description){
 		this.description = " - " + OPTIONS.description;
@@ -166,7 +167,9 @@ function FFPlayer(OPTIONS){
 
 		this.song.addEventListener("canplaythrough", function(){
 			// if(!alreadyPlayed){
-				this.play();
+				if(OPTIONS.autoPlay){
+					this.play();		
+				}
 				// play();
 				// console.log("motherfucker");
 			// }
@@ -191,7 +194,7 @@ function FFPlayer(OPTIONS){
 			//220575924
 			// SC.stream("/playlists/115049597", {
 			SC.get("/tracks/219210929", {
-				 autoPlay: !isMobile, 
+				 autoPlay: !isMobile && OPTIONS.autoPlay, 
 				 useHTML5Audio: true,
 				 preferFlash: false
 			}, function(sound){
@@ -207,7 +210,7 @@ function FFPlayer(OPTIONS){
 					document.getElementById('playerArtist').innerHTML = that.playlist.user.username;
 				}
 				SC.stream("/tracks/" + sound.id, {
-				  autoPlay: !isMobile, 
+				  autoPlay: !isMobile && OPTIONS.autoPlay, 
 				  useHTML5Audio: true,
 				  preferFlash: false
 				}, function(sound) {
@@ -229,7 +232,7 @@ function FFPlayer(OPTIONS){
 			// SC.stream("/playlists/115049597", {
 			SC.get("/playlists/137573264", {
 
-			  autoPlay: !isMobile, 
+			  autoPlay: !isMobile && OPTIONS.autoPlay, 
 			  useHTML5Audio: true,
 			  preferFlash: false
 			}, function(sound) {
@@ -247,7 +250,7 @@ function FFPlayer(OPTIONS){
 				// that.credits.innerHTML = "<div class='left'><li><b>"+ that.title + "</b> | " + this.artist + "<br><span id='timer'>0:00</span> - " + this.description + "<br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
 
 				SC.stream("/tracks/" + sound.tracks[currentPlaylistIndex].id, {
-				  autoPlay: !isMobile, 
+				  autoPlay: !isMobile  && OPTIONS.autoPlay, 
 				  useHTML5Audio: true,
 				  preferFlash: false
 				}, function(sound) {
