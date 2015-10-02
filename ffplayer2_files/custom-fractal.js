@@ -38,13 +38,13 @@ function FFPlayer(OPTIONS){
 			true/false -- allows user to share track
 	*/
 
-	this.mode = OPTIONS.mode || 'sc playlist';
+	this.mode = OPTIONS.mode || 'audio';
 	this.src = OPTIONS.src || '';
 	this.volume = OPTIONS.volume || true;
 	this.downlaod = OPTIONS.download || true;
 	this.share = OPTIONS.share || true;
-	this.title = OPTIONS.title || "BASED &amp; CONFUSED MIX";
-	this.artist = OPTIONS.artist || "ZORA JONES &amp; SINJIN HAWKE";
+	this.title = OPTIONS.title || "";
+	this.artist = OPTIONS.artist || "";
 	this.songTitle = OPTIONS.songTitle || "";
 	// this.description = "<i> Visual at <a href='http://fractalfantasy.net' target='_blank'>Fractal Fantasy</a> </i>";
 	if(OPTIONS.description){
@@ -90,9 +90,7 @@ function FFPlayer(OPTIONS){
 		for(var i = 0; i < 3; i++){
 			this.icons[i] = document.createElement("div");
 			this.icons[i].id = this.iconIds[i];
-			if(OPTIONS.embed){
-				this.icons[i].innerHTML = '<a class="embed-button"><i class="demo-icon icon-download embed embed-icn"></i></a>'
-			}
+			this.icons[i].innerHTML = '<a class="embed-button"><i class="demo-icon icon-download embed embed-icn"></i></a>'
 			this.icons[i].innerHTML += '<a class="download-button" href="https://api.soundcloud.com/tracks/220575924/download?secret_token=s-lNd99&client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&oauth_token=1-138878-11750333-43e80c8bc71589"><i class="demo-icon icon-download download download-icn"></i></a>';
 			this.icons[i].innerHTML += this.iconMarkups[i];
 			this.iconContainer.appendChild(this.icons[i]);
@@ -140,7 +138,7 @@ function FFPlayer(OPTIONS){
 	this.createSong = function(src){
 		this.song = document.createElement("audio");
 		this.song.src = src;
-		this.song.autoPlayStarted = false;
+		var alreadyPlayed = false;
 		this.song.getDuration = function(){
 			return this.duration;
 		}
@@ -165,8 +163,12 @@ function FFPlayer(OPTIONS){
 		this.song.addEventListener("timeupdate", function(){
 			that.update();
 		})
-		this.song.addEventListener("loadeddata", function(){
-			play();
+		this.song.addEventListener("canplaythrough", function(){
+			// if(!alreadyPlayed){
+				play();
+				// console.log("motherfucker");
+			// }
+			// alreadyPlayed = true;
 		})
 		this.song.addEventListener("ended", function(){
 			if(that.mode == "audio playlist"){
@@ -192,8 +194,16 @@ function FFPlayer(OPTIONS){
 				 preferFlash: false
 			}, function(sound){
 				that.playlist = sound;
-				document.getElementById('playerTitle').innerHTML = that.playlist.title;
-				document.getElementById('playerArtist').innerHTML = that.playlist.user.username;
+				if(that.title.length > 0){
+					document.getElementById('playerTitle').innerHTML = that.title;
+				} else {
+					document.getElementById('playerTitle').innerHTML = that.playlist.title;					
+				}
+				if(that.artist.length > 0){
+					document.getElementById('playerArtist').innerHTML = that.artist;
+				} else {
+					document.getElementById('playerArtist').innerHTML = that.playlist.user.username;
+				}
 				SC.stream("/tracks/" + sound.id, {
 				  autoPlay: !isMobile, 
 				  useHTML5Audio: true,
@@ -222,8 +232,16 @@ function FFPlayer(OPTIONS){
 			  preferFlash: false
 			}, function(sound) {
 				that.playlist = sound;
-				document.getElementById('playerTitle').innerHTML = that.playlist.title;
-				document.getElementById('playerArtist').innerHTML = that.playlist.user.username;
+				if(that.title.length > 0){
+					document.getElementById('playerTitle').innerHTML = that.title;
+				} else {
+					document.getElementById('playerTitle').innerHTML = that.playlist.title;					
+				}
+				if(that.artist.length > 0){
+					document.getElementById('playerArtist').innerHTML = that.artist;
+				} else {
+					document.getElementById('playerArtist').innerHTML = that.playlist.user.username;
+				}
 				// that.credits.innerHTML = "<div class='left'><li><b>"+ that.title + "</b> | " + this.artist + "<br><span id='timer'>0:00</span> - " + this.description + "<br> <div id='d_debug' class='embedtxt'></div><div id='titleContainer'><span id='trackTitle'></span></div></li></div>";
 
 				SC.stream("/tracks/" + sound.tracks[currentPlaylistIndex].id, {
@@ -419,8 +437,8 @@ function FFPlayer(OPTIONS){
 	//Play and Pause
 	var counter = 0;
 	function play() {
-		console.log("PLay CALLED");
 			if(that.song.getState() !== "playing"){
+				console.log("PLay CALLED");
 				that.song.play();
 				that.song.seek(currentTime);
 				pButton.className = "";
